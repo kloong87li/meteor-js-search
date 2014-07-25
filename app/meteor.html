@@ -9,7 +9,9 @@
 <template name="hello">
   <h1>Hello World!</h1>
   {{greeting}}
-  <input type="button" value="Click" />
+  <input type="text" class="name" value=""/>
+  <button onclick="Template.hello.createPlayer()">Add</button>
+  <button onclick="Template.hello.getLocation()">Location</button>
   Latitude: {{latitude}}
   Longitude: {{longitude}}
 </template>
