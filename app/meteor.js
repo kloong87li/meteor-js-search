@@ -12,7 +12,9 @@ if (Meteor.isClient) {
   };
 
   Template.hello.createPlayer = function() {
-      alert(d3.select(".name").property("value"));
+      var player = d3.select(".name").property("value");
+      Players.insert({name : player});
+      alert(player);
   };
     Template.hello.getLocation = function() {
 	navigator.geolocation.getCurrentPosition(function(pos) {
