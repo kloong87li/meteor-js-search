@@ -3,11 +3,21 @@ if (Meteor.isClient) {
     return "Welcome to meteor.";
   };
 
+  Template.hello.longitude = function() {
+    return Session.get("longitude");
+  }
+
+  Template.hello.latitude = function() {
+    return Session.get("latitude");
+  }
+
+
   Template.hello.events({
     'click input': function () {
-      // template data, if any, is available in 'this'
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          Session.set("longitude", pos.coords.longitude);
+          Session.set("latitude", pos.coords.latitude);
+        });
     }
   });
 }
