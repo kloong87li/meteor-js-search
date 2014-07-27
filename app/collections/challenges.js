@@ -17,7 +17,8 @@ Meteor.methods({
       playerId2: id2,
       playerName2: "testguy2",
       playerStatus2: null,
-      rejected: false
+      rejected: false,
+      battleId: null
     }
     return Challenges.insert(challenge);
   },

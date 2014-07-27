@@ -20,6 +20,20 @@ Template.challenge.challengeIsRejected = function() {
   return this.rejected;
 }
 
+Template.challenge.acceptanceResult = function() {
+  if (Template.challenge.hasAccepted.call(this)) {
+    var status = (globalUserId === this.playerId1) ? 
+                  this.playerStatus2 : this.playerStatus1;
+    switch (status) {
+      case "accepted":
+        return otherPlayerAccepted.call(this);
+      case "rejected":
+        return otherPlayerRejected.call(this);
+      default:
+        return;
+    }
+  }
+}
 
 Template.challenge.events = {
   'click .accept': function(evt) {
@@ -30,6 +44,24 @@ Template.challenge.events = {
   'click .reject': function(evt) {
     var playerId = globalUserId;
     Meteor.call("rejectChallenge", playerId, this._id);
+    window.location.href = "/";
   }
+
+}
+
+
+function otherPlayerRejected() {
+  window.setTimeout(function() {
+    window.location.href = "/";
+  }, 2000)
+  return "Other player rejected. Returning to main menu..."
+
+}
+
+function otherPlayerAccepted() {
+  window.setTimeout(function() {
+    window.location.href = "/battle/" + this.battleId;
+  }, 2000)
+  return "Other player accepted! Now heading into battle..."
 
 }

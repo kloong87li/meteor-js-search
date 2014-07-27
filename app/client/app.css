@@ -98,6 +98,10 @@ html, body {
   padding-top: 15%;
 }
 
+.accept-challenge-container .loader {
+  margin-top: 10%;
+}
+
 .challenge-button {
   width: 65%;
   height: 6.5rem;
@@ -113,4 +117,18 @@ html, body {
 
 .challenge-button.reject {
   background-color: #858585;
+}
+
+.challenge-accepted-text {
+  font-size: 26pt;
+}
+
+.challenge-accepted-text > b {
+  color: green;
+}
+
+.challenge-acceptance-result {
+  margin-top: 10%;
+  font-size: 16pt;
+
 }

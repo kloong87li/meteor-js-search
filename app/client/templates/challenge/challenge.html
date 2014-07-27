@@ -22,9 +22,17 @@
           Reject
         </div>
       {{else}}
-        Waiting...
+        <div class="challenge-accepted-text">
+          You've <b>ACCEPTED</b>
+        </div>
+        <div class="challenge-waiting-text">
+          Waiting for other player to accept...
+        </div>
+        <img class="loader" src="/images/ajax-loader.gif">
+        <div class="challenge-acceptance-result">
+          {{acceptanceResult}}
+        </div>
       {{/unless}}
     </div>
-
   </div>
 </template>
