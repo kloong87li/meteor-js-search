@@ -11,3 +11,4 @@ iron-router
 bootstrap-3
 http
 accounts-password
+http-methods
