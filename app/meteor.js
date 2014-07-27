@@ -70,8 +70,12 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    
     Meteor.users._ensureIndex({ loc : "2d" })
+    Meteor.users.find().forEach(function(user){
+      if(Pokemon.find({userId: user._id}).count() === 0){
+        Meteor.call('createFirstPokemon', user._id);
+        }
+    });
     // code to run on server at startup
   });
 }

@@ -4,10 +4,10 @@ if (Meteor.isServer) {
   	user.currentlyBusy = false;
   	user.numpokeballs = 5;
   	
-    	// We still want the default hook's 'profile' behavior.
-    	if (options.profile)
-      	user.profile = options.profile;
-    	return user;
+	// We still want the default hook's 'profile' behavior.
+	if (options.profile)
+  	user.profile = options.profile;
+	return user;
   });
 
   Accounts.onLogin(function(attempt){
