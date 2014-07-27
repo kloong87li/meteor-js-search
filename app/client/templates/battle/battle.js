@@ -41,7 +41,6 @@ Template.battle.events = {
     console.log("do move client");
     Meteor.call("doMove", Session.get("battleId"), Meteor.userId(), this.move, 
       function(e, res) {
-        console.log(this.battle);
         Meteor.call("changeTurn", Session.get("battleId"));
     });
   }
@@ -58,6 +57,7 @@ Template.battle.turnText = function() {
 
 Template.battle.myPokemon = function() {
   if (!this.battle) return;
+  console.log(this.battle);
   if (this.battle.userId1 == Meteor.userId()) {
     return this.pokemon1;
   } else {

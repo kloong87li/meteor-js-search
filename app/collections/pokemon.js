@@ -1,7 +1,7 @@
 Pokemon = new Meteor.Collection('pokemon');
-// Pokemon.remove({});
 
 if (Meteor.isServer) {
+	Pokemon.remove({}); 
 	function calculateStat(base, level) {
 		var iv = 10;
 		var ev = 100;

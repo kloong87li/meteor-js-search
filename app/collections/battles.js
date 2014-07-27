@@ -38,6 +38,7 @@ if (Meteor.isServer) {
         }
         })
       })
+      console.log(attackType, defendingPokemon.types, effectiveness)
       return effectiveness;
   }
 
