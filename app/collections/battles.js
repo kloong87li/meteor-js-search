@@ -27,7 +27,8 @@ Meteor.methods({
 			turn: userId1,
 			isOver: false
 		}
-
+        Users.update({_id:userId1}, $set {currentlyBusy:true});
+        Users.update({_id:userId2}, $set {currentlyBusy:true});
 		Battles.insert(battle);
 	},
 
@@ -78,7 +79,7 @@ Meteor.methods({
 		console.log("changed pokemon:" + pokemonId);
 	}
     
-    endBattle: function(battleId, winnerId) {
+    endChallenge: function(battleId, winnerId) {
         var battle = Battles.findOne({_id:battleId});
         var loserId;
         if (battle.playerId1 == winnerId) {
@@ -89,8 +90,8 @@ Meteor.methods({
         var winnerMoney = Users.findOne({_id:winnerId}).money;
         var loserMoney = Users.findOne({_id:loserId}).money;
         loserMoney = Math.max(0, loserMoney-100);
-        User.update({_id:winnerId}, $set: {money: winnerMoney});
-        User.update({_id:loserId}, $set: {money: loserMoney});
+        User.update({_id:winnerId}, $set: {money: winnerMoney, currentlyBusy: false});
+        User.update({_id:loserId}, $set: {money: loserMoney, currentlyBusy: false});
         Battles.remove({_id: battleId});
     }
 
