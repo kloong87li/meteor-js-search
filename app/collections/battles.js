@@ -5,20 +5,23 @@ if (Meteor.isServer) {
     var battles = Battles.find(id);
     var battle = Battles.findOne(id);
     return [battles, 
-            Pokemon.find(battle.pokemonId1), 
-            Pokemon.find(battle.pokemonId2)];
+        Pokemon.find()];
   });
 
   function getFirstPokemon(userId){
     return Pokemon.findOne({userId: userId, current_hp: {$ne: 0}}, {partyPosition: 1}, {sort: {partyPosition: 1}});
   }
 
+  function capFirst(s) {
+    return s[0].toUpperCase() + s.slice(1,s.length);
+  }
+
   function getEffectiveness(attackType, defendingPokemon) {
     effectiveness = 1;
-
+    console.log("attacktype", attackType);
     _.each(attackType.super_effective, function(se_type){
       _.each(defendingPokemon.types, function(type) { 
-        if(se_type === type){
+        if(se_type.name === type){
           effectiveness *=2;
         }
         })
@@ -26,7 +29,7 @@ if (Meteor.isServer) {
 
       _.each(attackType.ineffective, function(ie_type){
       _.each(defendingPokemon.types, function(type) { 
-        if(ie_type === type){
+        if(ie_type.name === type){
           effectiveness *=.5;
         }
         })
@@ -34,11 +37,12 @@ if (Meteor.isServer) {
 
       _.each(attackType.no_effect, function(ne_type){
       _.each(defendingPokemon.types, function(type) { 
-        if(ne_type === type){
+        if(ne_type.name === type){
           effectiveness *=0;
         }
         })
       })
+      console.log("effectiveness", effectiveness)
       return effectiveness;
   }
 
@@ -48,7 +52,8 @@ if (Meteor.isServer) {
       var attackStat = move.category === 'special' ? attackingPokemon.sp_atk : attackingPokemon.attack;
       var defenseStat = move.category === 'special' ? attackingPokemon.sp_def : attackingPokemon.defense;
 
-      var effectiveness = getEffectiveness(move.type, defendingPokemon);
+      var type = Types.findOne({name: capFirst(move.type)});
+      var effectiveness = getEffectiveness(type, defendingPokemon);
 
       
       damage = (((2 * attackingPokemon.level / 5 + 2)
@@ -74,22 +79,21 @@ if (Meteor.isServer) {
       }
           Meteor.users.update({_id:userId1}, {$set: {currentlyBusy:true}});
           Meteor.users.update({_id:userId2}, {$set: {currentlyBusy:true}});
-      Battles.insert(battle);
-      return battle;
+      return Battles.insert(battle);
     },
 
     startBattle: function(battleId) {
       battle.update({_id: battleId}, {$set: {active: true}});
     },
 
-    doMove: function(battleId, moveName) {
+    doMove: function(battleId, playerId, moveName) {
       var battle = Battles.findOne({_id: battleId});
 
-      if(battle.turn !== Meteor.user._id) {
+      if(battle.turn !== playerId) {
         throw new Meteor.Error(400, "It's not your turn");
       }
 
-      if(user._id === battle.userId1){
+      if(playerId === battle.userId1){
         var myPokemon = Pokemon.findOne({_id: battle.pokemonId1});
       	var otherPokemon = Pokemon.findOne({_id: battle.pokemonId2});
       } else {
@@ -97,35 +101,36 @@ if (Meteor.isServer) {
       	var otherPokemon = Pokemon.findOne({_id: battle.pokemonId1});
       }
 
-
-      var move = Move.findOne({name: moveName});
+      var move = Moves.findOne({name: stripMoveName(moveName)});
 
       //decrement pp
       _.each(myPokemon.moves, function(move){
-        if(move.name == moveName){
+        if(move.move == moveName){
           move.pp--;
         }
       })
-      Pokemon.update(myPokemon);
+      Pokemon.update(myPokemon._id, myPokemon);
+      console.log("my pokemon:", Pokemon.findOne(myPokemon._id));
 
       var missed = Math.random()*100 > move.accuracy;
       var lastMoveText = "";
       if(missed){
-        lastMoveText += "It missed!";
+        lastMoveText = "It missed! ";
       } else {
+        console.log(move);
         var damage = calculateDamage(myPokemon, otherPokemon, move);
 
         Pokemon.update({_id: otherPokemon._id}, {$set: {current_hp : Math.max(0, otherPokemon.current_hp - damage)}});
 
-        var effectiveness = getEffectivenss(move.type, otherPokemon);
-        var effectivenessMessage = "";
+        var type = Types.findOne({name: capFirst(move.type)});
+        var effectiveness = getEffectiveness(type, otherPokemon);
 
         if(effectiveness > 1){
-          lastMovetext += "It was super effective!";
+          lastMoveText = "It was super effective! ";
         } else if (effectiveness === 0){
-          lastMoveText += "It had no effect...";
+          lastMoveText = "It had no effect... ";
         } else if (effectiveness < 1) {
-          lastMoveText += "It was not very effective...";
+          lastMoveText = "It was not very effective... ";
         }
 
         if(otherPokemon.current_hp === 0){
@@ -137,15 +142,15 @@ if (Meteor.isServer) {
       }
       battle.lastMoveText = lastMoveText;
       battle.lastMoveName = move.name;
-      Battles.update(battle);
-      console.log("do move");
+      battle.lastMovePokemon = myPokemon.name;
+      Battles.update(battle._id, battle);
     },
 
 
-      changeTurn: function(battleId) {
-          var battle = Battles.findOne({_id:battleId});
-          Battles.update({_id:battleId}, {$set: {turn: battle.offTurn, offTurn: battle.turn}});
-      },
+    changeTurn: function(battleId) {
+        var battle = Battles.findOne({_id:battleId});
+        Battles.update({_id:battleId}, {$set: {turn: battle.offTurn, offTurn: battle.turn}});
+    },
 
                         
     changePokemon: function(battleId, pokemonId) {
@@ -193,6 +198,11 @@ if (Meteor.isServer) {
       loserMoney = Math.max(0, loserMoney-100);
       Meteor.users.update({_id:winnerId}, {$set: {money: winnerMoney, currentlyBusy: false}});
       Meteor.users.update({_id:loserId}, {$set: {money: loserMoney, currentlyBusy: false}});
+
+      Pokemon.find({userId: loserId}, {current_hp:1, hp: 1}).forEach(function(pokemon){
+      	Pokemon.update({_id: pokemon._id}, {$set: {current_hp: pokemon.hp}});
+      });
+
       Battles.update({_id: battleId}, {$set: {isOver: true}});
     }
   });
