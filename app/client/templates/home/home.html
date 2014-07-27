@@ -1,60 +1,31 @@
 <template name="home">
-<body>
-<div class="home-container" style="margin-top: 110px; margin-left:35px;background-color:transparent">
-  <div class="row">
-    <div class="col-md-12"> 
-      <div class="panel" style="background-color:transparent">
-        <div class="panel-body">
-          <!--/stories-->
-          <div class="row">    
-            <div class="col-md-5 col-sm-6">
-              <a class="story-title" href="#"><img alt="" src="http://img.pokemondb.net/artwork/bulbasaur.jpg" style="width:60px;height:60px;border:5px solid #e8e6e6;" class="img-circle poke"></a>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <h4><span class="label label-default" style="font-family:courier,'new courier';">Pokedex</span></h4>
-            </div>
-          </div>
-
-          <div class="row">    
-            <div class="col-md-5 col-sm-6">
-              <a class="story-title" href="#"><img alt="" src="http://img.pokemondb.net/artwork/pikachu.jpg" style="width:60px;height:60px;border:5px solid #e8e6e6;" class="img-circle poke"></a>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <h4><span class="label label-default" style="font-family:courier,'new courier';">Bag</span></h4>
-            </div>
-          </div>
-
-          <div class="row">    
-            <div class="col-md-5 col-sm-6">
-              <a class="story-title" href="#"><img alt="" src="http://img.pokemondb.net/artwork/abra.jpg" style="width:60px;height:60px;border:5px solid #e8e6e6;" class="img-circle"></a>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <h4><span class="label label-default" style="font-family:courier,'new courier';">{{> loginButtons}}</span></h4>
-            </div>
-          </div>
-
-          <div class="row">    
-            <div class="col-md-5 col-sm-6">
-              <a class="story-title" href="#"><img alt="" src="http://img.pokemondb.net/artwork/bulbasaur.jpg" style="width:60px;height:60px;border:5px solid #e8e6e6;" class="img-circle"></a>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <h4><span class="label label-default" style="font-family:courier,'new courier';">Option</span></h4>
-            </div>
-          </div>
-
-          <div class="row">    
-            <div class="col-md-5 col-sm-6">
-              <a class="story-title" href="#"><img alt="" src="http://img.pokemondb.net/artwork/poliwag.jpg" style="width:60px;height:60px;border:5px solid #e8e6e6;" class="img-circle"></a>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <h4><span class="label label-default" style="font-family:courier,'new courier';">Quit</span></h4>
-              </div>
-          </div>
+  <div class="home-container">
+    <div class="menu-container">
+      <div class="row"> 
+        <div class="menu-item">
+          Pokedex
         </div>
-      </div>                                
-    </div><!--/col-12-->
-
+      </div>
+      <div class="row"> 
+        <div class="menu-item">
+          Bag 
+        </div>
+      </div>
+      <div class="row">
+        <div class="menu-item" id="login-button">
+          {{> loginButtons}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="menu-item">
+          Option 
+        </div>
+      </div>
+      <div class="row">
+        <div class="menu-item">
+          Quit 
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-</body>
 </template>
