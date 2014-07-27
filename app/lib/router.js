@@ -10,19 +10,14 @@ Router.map(function() {
   });
 
   this.route('challenge', {
-    path: '/challenge/:_challenge_id',
+    path: '/challenge/:_id',
     template: 'challenge',
-    data: function() { 
-      // var challenge = Challenges.findOne(this.params._challenge_id)
-      var challenge = {
-        id: this.params._challenge_id,
-        type: "wild", /* 'trainer' or 'wild' */
-        challenger_id: null, /* option id of challenging player */
-        challenger: null
-      }
-      // var player = Users.findOne(challenge.challenger_id);
-      // challenge.challenger = player;
-      return challenge; 
+    waitOn: function() {
+      return Meteor.subscribe("singleChallenge", this.params._id);
+    },
+    data: function() {
+      var challenge = Challenges.findOne({_id: this.params._id});
+      return challenge;
     }
   });
   

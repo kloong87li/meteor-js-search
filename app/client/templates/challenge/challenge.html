@@ -12,10 +12,27 @@
       </div>
     </div>
 
+    
     <div class="accept-challenge-container">
-      <div class="accept-challenge-button">
-        Accept
-      </div>
+      {{#unless hasAccepted}}
+        <div class="challenge-button accept">
+          Accept
+        </div>
+        <div class="challenge-button reject">
+          Reject
+        </div>
+      {{else}}
+        <div class="challenge-accepted-text">
+          You've <b>ACCEPTED</b>
+        </div>
+        <div class="challenge-waiting-text">
+          Waiting for other player to accept...
+        </div>
+        <img class="loader" src="/images/ajax-loader.gif">
+        <div class="challenge-acceptance-result">
+          {{acceptanceResult}}
+        </div>
+      {{/unless}}
     </div>
   </div>
 </template>
