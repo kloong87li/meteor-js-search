@@ -35,36 +35,36 @@ if (Meteor.isClient) {
           Session.set("latitude", pos.coords.latitude);
         });
     }
-  });*/
-HTTP.post('/test', {
-    data: {
-      'name': 'testing1',
-      'lon': '12.324',
-      'lat': '16.324'
-    }
-  }, function(err, result) {
-    console.log('Got back: ' + result.content);
-  });
+//   });*/
+// HTTP.post('/test', {
+//     data: {
+//       'name': 'testing1',
+//       'lon': '12.324',
+//       'lat': '16.324'
+//     }
+//   }, function(err, result) {
+//     console.log('Got back: ' + result.content);
+//   });
 
-HTTP.post('/test', {
-    data: {
-      'name': 'testing2',
-      'lon': '22.324',
-      'lat': '26.324'
-    }
-  }, function(err, result) {
-    console.log('Got back: ' + result.content);
-  });
+// HTTP.post('/test', {
+//     data: {
+//       'name': 'testing2',
+//       'lon': '22.324',
+//       'lat': '26.324'
+//     }
+//   }, function(err, result) {
+//     console.log('Got back: ' + result.content);
+//   });
 
-HTTP.post('/test', {
-    data: {
-      'name': 'testing3',
-      'lon': '32.324',
-      'lat': '36.324'
-    }
-  }, function(err, result) {
-    console.log('Got back: ' + result.content);
-  });
+// HTTP.post('/test', {
+//     data: {
+//       'name': 'testing3',
+//       'lon': '32.324',
+//       'lat': '36.324'
+//     }
+//   }, function(err, result) {
+//     console.log('Got back: ' + result.content);
+//   });
 
 }
 
