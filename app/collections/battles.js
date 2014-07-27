@@ -1,9 +1,7 @@
 Battles = new Meteor.Collection('battles');
 
 function getFirstPokemon(userId){
-	// TODO: get first pokemon
-	var pokemon = {};
-	return pokemon;
+	return Pokemon.findOne({userId: userId, current_hp: {$ne: 0}}, {partyPosition: 1}, {sort: {partyPosition: 1}});
 }
 
 function getEffectiveness(attackType, defendingPokemon) {
@@ -64,8 +62,8 @@ Meteor.methods({
 			offTurn: userId2,
 			isOver: false
 		}
-        //User.update({_id:userId1}, $set: {currentlyBusy: true});
-        //User.update({_id:userId2}, $set: {currentlyBusy: true});
+        Meteor.users.update({_id:userId1}, {$set: {currentlyBusy:true}});
+        Meteor.users.update({_id:userId2}, {$set: {currentlyBusy:true}});
 		Battles.insert(battle);
 	},
 
@@ -139,6 +137,7 @@ Meteor.methods({
 	},
     
     endBattle: function(battleId, winnerId) {
+
         var battle = Battles.findOne({_id:battleId});
         var loserId;
         if (battle.playerId1 == winnerId) {
@@ -149,8 +148,8 @@ Meteor.methods({
         var winnerMoney = Users.findOne({_id:winnerId}).money;
         var loserMoney = Users.findOne({_id:loserId}).money;
         loserMoney = Math.max(0, loserMoney-100);
-        User.update({_id:winnerId}, $set: {money: winnerMoney, currentlyBusy: false});
-        User.update({_id:loserId}, $set: {money: loserMoney, currentlyBusy: false});
+        Meteor.users.update({_id:winnerId}, {$set: {money: winnerMoney, currentlyBusy: false}});
+        Meteor.users.update({_id:loserId}, {$set: {money: loserMoney, currentlyBusy: false}});
         Battles.update({_id: battleId}, {$set: {isOver: true}});
     }
 

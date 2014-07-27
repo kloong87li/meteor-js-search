@@ -28,8 +28,8 @@ Meteor.methods({
 		var moves = _.last(
 			_.sortBy(
 				_.filter(pokemonData.moves, function(move){
-					return move.learn_type === "level up" && move.level <= level &&
-						move.category !== 'status';
+					var moveData = Moves.findOne({name: stripMoveName(move.name)});
+					return move.learn_type === "level up" && move.level <= level && moveData.category !== "status";
 				})
 			, function(move){
 				return move.level;
