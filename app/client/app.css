@@ -1,3 +1,21 @@
+@font-face {
+    font-family: pokePrint; 
+    src:
+    url("/fonts/Pokemon-GB.ttf")
+}
+
+@font-face {
+    font-family: pokeHollow; 
+    src:
+    url("/fonts/Pokemon-Hollow.ttf")
+}
+
+@font-face {
+    font-family: pokeSolid; 
+    src:
+    url("/fonts/Pokemon-Solid.ttf")
+}
+
 body {
   height: 480px;
   width: 320px;
