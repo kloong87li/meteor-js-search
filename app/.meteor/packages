@@ -11,3 +11,5 @@ bootstrap-3
 http
 accounts-password
 npm
+accounts-ui
+accounts-google

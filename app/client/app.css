@@ -45,6 +45,25 @@ html, body {
 
 }
 
+/* Login styles */
+
+
+#login-buttons {
+  width: 100%;
+}
+
+#login-buttons{
+  font-size: 20pt;
+  width: 100%;
+}
+
+#login-buttons a {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  color: black;
+}
+
 
 
 /* Challenge page styles */

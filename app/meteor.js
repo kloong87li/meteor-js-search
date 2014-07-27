@@ -1,6 +1,10 @@
 if (Meteor.isClient) {
   globalUserId = 1;
-  
+
+  Accounts.ui.config({
+    passwordSignupFields: 'USERNAME_ONLY'
+  });
+
  //  Template.hello.greeting = function () {
  //    return "Add a player:";
  //  };

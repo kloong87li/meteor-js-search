@@ -20,5 +20,17 @@ Router.map(function() {
       return challenge;
     }
   });
+
+  this.route('battle', {
+    path: '/battle/:_id',
+    template: 'battle',
+    waitOn: function() {
+      return Meteor.subscribe("singleBattle", this.params._id);
+    },
+    data: function() {
+      var battle = Battles.findOne({_id: this.params._id});
+      return battle;
+    }
+  });
   
 });
