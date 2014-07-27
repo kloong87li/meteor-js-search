@@ -142,6 +142,7 @@ if (Meteor.isServer) {
       }
       battle.lastMoveText = lastMoveText;
       battle.lastMoveName = move.name;
+      battle.lastMovePokemon = myPokemon.name;
       Battles.update(battle._id, battle);
     },
 

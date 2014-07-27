@@ -78,3 +78,10 @@ Template.battle.myPokemonFainted = function (){
   var mine = Template.battle.myPokemon().call(this);
   return mine.current_hp <= 0;
 }
+
+Template.battle.flavorText = function (){
+  if (!this.battle || ! this.battle.lastMovePokemon) return ""; 
+  var res = this.battle.lastMovePokemon + " used " + this.battle.lastMoveName + ". ";
+  res += this.battle.lastMoveText;
+  return res;
+}
