@@ -1,5 +1,8 @@
-html, body {
-  height: 100%;
+body {
+  background-image: url(http://fc06.deviantart.net/fs71/f/2010/254/3/7/pokedex_wallpaper_v1_by_bugbyte-d2yii0o.png);
+  background-repeat: no-repeat;
+  height: 480px;
+  width: 320px;
 }
 
 /* OVERRIDES */
@@ -15,8 +18,9 @@ html, body {
 
 
 /* Home menu styles */
-
+/*
 .home-container {
+
   background-color: red;
   height: 100%;
   padding: 2rem;
@@ -43,7 +47,7 @@ html, body {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 
-}
+}*/
 
 /* Login styles */
 
