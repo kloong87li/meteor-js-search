@@ -63,10 +63,10 @@ if (Meteor.isServer) {
       var battle = {
         userId1: userId1,
         username1: Meteor.users.findOne({_id: userId1}).username,
-        pokemon1: getFirstPokemon(userId1),
+        pokemonId1: getFirstPokemon(userId1)._id,
         userId2: userId2,
         username2: Meteor.users.findOne({_id: userId2}).username,
-        pokemon2: getFirstPokemon(userId2),
+        pokemonId2: getFirstPokemon(userId2)._id,
         turn: userId1,
         offTurn: userId2,
         isOver: false,
@@ -89,16 +89,15 @@ if (Meteor.isServer) {
         throw new Meteor.Error(400, "It's not your turn");
       }
 
-      if(user._id === battle.player1.userId){
-        var me = battle.player1;
-        var other = battle.player2
+      if(user._id === battle.userId1){
+        var myPokemon = Pokemon.findOne({_id: battle.pokemonId1});
+      	var otherPokemon = Pokemon.findOne({_id: battle.pokemonId2});
       } else {
-        var me = battle.player2;
-        var other = battle.player1
+        var myPokemon = Pokemon.findOne({_id: battle.pokemonId2});
+      	var otherPokemon = Pokemon.findOne({_id: battle.pokemonId1});
       }
 
-      var myPokemon = Pokemon.findOne({_id: me.pokemonId});
-      var otherPokemon = Pokemon.findOne({_id: other.pokemonId});
+
       var move = Move.findOne({name: moveName});
 
       //decrement pp
@@ -144,14 +143,15 @@ if (Meteor.isServer) {
 
 
       changeTurn: function(battleId) {
-          Battles.update({_id:battleId}, {$set: {turn: offTurn, offTurn: turn}});
+          var battle = Battles.findOne({_id:battleId});
+          Battles.update({_id:battleId}, {$set: {turn: battle.offTurn, offTurn: battle.turn}});
       },
 
                         
     changePokemon: function(battleId, pokemonId) {
           var battle = Battles.findOne({_id:battleId});
           var pokemon = Pokemon.findOne({_id:pokemonId});
-          if (battle.playerId1 == pokemon.user_id) {
+          if (battle.playerId1 == pokemon.userId) {
               Battles.update({_id:battleId},
                              {$set: {pokemonId1: pokemonId}});
           } else {
@@ -161,6 +161,25 @@ if (Meteor.isServer) {
       console.log("changed pokemon:" + pokemonId);
     },
       
+      expPokemon: function(killerId, victimId) {
+          var killer = Pokemon.findOne({_id:killerId});
+          var victim = Pokemon.findOne({_id:victimId});
+          var exp_required = expForLevel(killer.level, 0);
+          var exp_gained = victim.level
+              * victim.level
+              * victim.level
+              * (100 - victim.level) / 50;
+          var text = killer.name + " gained " + exp_gained + " experience. ";
+          var current_exp = killer.exp;
+          if (exp_required <= exp_gained + current_exp) {
+              Pokemon.update({_id:killerId}, {$set: {level: killer.level+1,exp: exp_required-exp_gained + current_exp}});
+              text = text + kill.name + " leveled up to " + killer.level + ". ";
+          } else {
+              Pokemon.update({_id:killerId}, {$set: {exp: exp_gained + current_exp}});
+          }
+          return text;
+      }
+
     endBattle: function(battleId, winnerId) {
       var battle = Battles.findOne({_id:battleId});
       var loserId;

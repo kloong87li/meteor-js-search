@@ -12,7 +12,7 @@ if (Meteor.isServer) {
 
   Accounts.onLogin(function(){
   	// If the user has no pokemon yet, create one
-  	if(Pokemon.find({user_id: Meteor.user._id}).count() === 0){
+  	if(Pokemon.find({userId: Meteor.user._id}).count() === 0){
   		Meteor.call('createFirstPokemon', Meteor.user._id);
   	}
   })

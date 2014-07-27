@@ -263,3 +263,9 @@ html, body {
   font-weight: 850;
   color: white;
 }
+
+
+/* Pokedex styles */
+.pokedex-container {
+  background-color: red;
+}

@@ -37,9 +37,11 @@ function createPokemon(pokemonNum, level) {
 
 	var moveSet = []
 	for(var i = 0; i < moves.length; i++) {
+		max_pp = Moves.findOne({name: stripMoveName(moves[i].name)}).pp;
 		moveSet[i] = {
 			move: moves[i].name,
-			pp: Moves.findOne({name: stripMoveName(moves[i].name)}).pp
+			pp: max_pp,
+			max_pp: max_pp
 		}
 	}
 
@@ -51,6 +53,7 @@ function createPokemon(pokemonNum, level) {
 	pokemon = {
 		name: pokemonData.name,
 		level: level,
+		image_url: "http://pokeapi.co" + Sprites.findOne({id: pokemonData.national_id+1}).image,
 		types: types,
 		moves: moveSet,
 		exp: expForLevel(level),
@@ -69,7 +72,8 @@ Meteor.methods({
 		var level = 25;
 		var pokemonNum = 1 + Math.floor(Math.random() * 2)*3;
 		var pokemon = createPokemon(pokemonNum, level);
-		pokemon.user_id = userId;
+		pokemon.userId = userId;
+		pokemon.partyPosition = 1;
 		Pokemon.insert(pokemon);
 		return pokemon;
 	},
