@@ -68,7 +68,6 @@ Meteor.methods({
         var battle = Battles.findOne({_id:battleId});
         var pokemon = Pokemon.findOne({_id:pokemonId});
         if (battle.playerId1 == pokemon.user_id) {
-            var myPokemon = Pokemon.findOne({_id:battle.pokemonId1});
             Battles.update({_id:battleId},
                            {$set: {pokemonId1: pokemonId}});
         } else {
