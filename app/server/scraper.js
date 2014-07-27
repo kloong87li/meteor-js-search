@@ -1,4 +1,4 @@
-var cheerio = Meteor.require('cheerio');
+//var cheerio = Meteor.require('cheerio');
 
 function scrape() {
 	Meteor.http.get('http://pokemondb.net/move/all', function(err, data) { 
