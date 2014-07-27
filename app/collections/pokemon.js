@@ -12,7 +12,8 @@ function calculateHp(base, level) {
 	return Math.floor(level*(iv + 2*base + ev/4 + 100)/100 + 5);
 }
 
-function expForLevel(level) { 
+function expForLevel(level, growthRate) { 
+	//TODO: do legitimately
 	var exp = 0;
 	for(var i = 0; i < level; i++){
 		exp += i;
@@ -33,31 +34,32 @@ function createPokemon(pokemonNum, level) {
 		})
 	, 4);
 
-	var moveSet = []
-	for(var i = 0; i < moves.length; i++) {
-		moveSet[i] = {
-			move: moves[i].name,
-			pp: Moves.findOne({name: moves[i].name}).pp
+		var moveSet = []
+		for(var i = 0; i < moves.length; i++) {
+			moveSet[i] = {
+				move: moves[i].name,
+				pp: Moves.findOne({name: stripMoveName(moves[i].name)}).pp
+			}
 		}
-	}
 
-	var stats = {
-		hp: calculateHp(pokemonData.hp, level),
-		attack: calculateStat(pokemonData.attack, level),
-		defense: calculateStat(pokemonData.defense, level),
-		sp_atk: calculateStat(pokemonData.sp_atk, level),
-		sp_def: calculateStat(pokemonData.sp_def, level),
-		speed: calculateStat(pokemonData.speed, level)
-	}
+		var types = _.map(pokemonData.types, function(type){
+			return type.name;
+		})
+		console.log(types);
 
-	pokemon = {
-		name: pokemonData.name,
-		level: level,
-		types: pokemonData.types, 
-		moves: moveSet,
-		exp: expForLevel(level),
-		stats: stats,
-		hp: stats.hp
-	}
-	Pokemon.insert(pokemon);
+		pokemon = {
+			name: pokemonData.name,
+			level: level,
+			types: types,
+			moves: moveSet,
+			exp: expForLevel(level),
+			hp: calculateHp(pokemonData.hp, level),
+			attack: calculateStat(pokemonData.attack, level),
+			defense: calculateStat(pokemonData.defense, level),
+			sp_atk: calculateStat(pokemonData.sp_atk, level),
+			sp_def: calculateStat(pokemonData.sp_def, level),
+			speed: calculateStat(pokemonData.speed, level),
+			current_hp: calculateHp(pokemonData.hp, level),
+		}
+		Pokemon.insert(pokemon);
 }
