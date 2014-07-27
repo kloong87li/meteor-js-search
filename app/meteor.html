@@ -1,12 +1,17 @@
+
 <head>
-  <title>meteor</title>
+  <title>Pokemon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
-<body>
-  {{> hello}}
-</body>
+<template name="index">
+  <div class="app-container container-fluid">
+    {{> yield}}
+  </div>
+</template>
 
-<template name="hello">
+
+<!-- <template name="hello">
   <h1>Hello World!</h1>
   {{greeting}}
   <input type="text" class="name" value=""/>
@@ -15,3 +20,4 @@
   Latitude: {{latitude}}
   Longitude: {{longitude}}
 </template>
+ -->

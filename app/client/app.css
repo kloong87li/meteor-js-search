@@ -1,0 +1,96 @@
+html, body {
+  height: 100%;
+}
+
+/* OVERRIDES */
+
+.container-fluid {
+  height: 100%;
+  padding: 0;
+}
+
+.row {
+  margin: 0;
+}
+
+
+/* Home menu styles */
+
+.home-container {
+  background-color: red;
+  height: 100%;
+  padding: 2rem;
+}
+
+.home-container .menu-container {
+  border: 2px solid black;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.home-container .row {
+  text-align: center;
+  height: 20%;
+  border-top: 1px solid gray;
+  border-bottom: 2px solid black;
+}
+
+.home-container .menu-item {
+  font-size: 20pt;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+
+}
+
+
+
+/* Challenge page styles */
+
+.challenge-container {
+  background-color: red;
+  height: 100%;
+  padding: 7rem 2rem 0 2rem;
+}
+
+.challenge-container * {
+  text-align: center;
+}
+
+.challenge-lcd-screen {
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: gray;
+  height: 40%;
+}
+
+.challenge-header {
+  text-align: center;
+  padding-top: 2rem;
+}
+
+.challenge-body {
+  margin-top: 2.5rem;
+  font-size: 14pt;
+}
+
+.challenge-body .challenger-name {
+  font-weight: bold;
+}
+
+.challenge-header .challenge-alert {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 24pt;
+  color: green;
+}
+
+.challenge-header .challenge-alert-subtext {
+  font-size: 18pt;
+}
+
+.challenge-container {
+  
+}
