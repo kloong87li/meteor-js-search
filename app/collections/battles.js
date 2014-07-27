@@ -178,7 +178,7 @@ if (Meteor.isServer) {
               Pokemon.update({_id:killerId}, {$set: {exp: exp_gained + current_exp}});
           }
           return text;
-      }
+      },
 
     endBattle: function(battleId, winnerId) {
       var battle = Battles.findOne({_id:battleId});
