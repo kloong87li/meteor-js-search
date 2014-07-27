@@ -62,9 +62,10 @@ function otherPlayerRejected() {
 }
 
 function otherPlayerAccepted() {
+    console.log("redirecting....");
   window.setTimeout((function() {
     if (Android)
-      Android.redirect("/");
+        Android.redirect("/battle/" + this.battleId);
     else
       window.location.href = "/battle/" + this.battleId;
   }).bind(this), 2000);
