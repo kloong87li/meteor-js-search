@@ -33,4 +33,14 @@ Router.map(function() {
     }
   });
   
+  this.route('pokedex', {
+    path: '/pokedex/',
+    template: 'pokedex',
+    waitOn: function() {
+      return [Meteor.subscribe("pokemonData"), Meteor.subscribe("sprites")];
+    },
+    data: function() {
+      PokemonData.find();
+    }
+  })
 });

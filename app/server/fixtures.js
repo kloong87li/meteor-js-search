@@ -25,13 +25,15 @@ function scrape() {
 var totalPokemon = 0;
 var totalMoves = 0;
 var totalTypes = 0;
+var totalSprites = 0;
 
-loadData = false;
+loadData = true;
 
 if(loadData) {
 	var totalPokemon = 150;
 	var totalMoves = 625;
 	var totalTypes = 18;
+	var totalSprites = 152;
 }
 
 
@@ -87,13 +89,29 @@ function loadType(number) {
 			}
 		});
 	}
-	
+}
+
+function loadSprite(number) { 
+	console.log("load" + number);
+	if(number > 0 && number <= totalSprites) {
+		var prefix = 'http://www.pokeapi.co/api/v1/sprite/';
+		console.log(prefix + number);
+		data = Meteor.http.get(prefix + number, function(err, data) { 
+			if(err){
+				console.log(err);
+			} else {
+				Sprites.insert(data.data);
+				loadSprite(number+1);
+			}
+		});
+	}
 }
 
 if(loadData){
 	loadPokemon(PokemonData.find().count() + 1);
 	loadMove(Moves.find().count() + 1);
 	loadType(Types.find().count() + 1);
+	loadSprite(Sprites.find().count()+1);
 }
 
 
@@ -102,7 +120,7 @@ if(Meteor.users.find().count() == 0) {
 
 }
 
-//Meteor.call('createFirstPokemon', 1, 30);
+Meteor.call('createFirstPokemon', 1, 30);
 // createPokemon(1, 10);
 
 //===============location stuff ===========================================
@@ -158,24 +176,44 @@ function lookForChallenge(this_id) {
 	})
 }
 
-HTTP.methods({
-'/test': {
-  method: function(data) {
-  	//console.log("printing received JSON:");
-  	//console.log(data);
-	var UserInfo = FakeUsers.find({name: data.name}).fetch();
-  	if(data.lon)
-  	{
-  		FakeUsers.update(UserInfo[0]._id,
-  			{$set: {location:{lat: data.lat, lon: data.lon}}});
-  		if(UserInfo[0].currentlyBusy==false){
-  			lookForChallenge(UserInfo[0]._id);
-			///console.log(Challenges.find().fetch());
+function findUsersNear(user) {
+	var dist = .001;
+	return Meteor.users.find(
+		{ loc : { $within : { $box : [[user.loc[0]-dist, user.loc[1]-dist], [user.loc[0]+dist, user.loc[1]+dist]]}}
+	}).fetch();
+}
 
-  		}
-	}
-	//console.log("updated location info");
-  	return "Battle is here";//JSON.stringify(Battles.find().fetch());
+HTTP.methods({
+'/challengesForLocation': {
+  method: function(data) {
+  	data = this.query;
+  	Meteor.users.insert({username: 'yolo' + Math.random(), currentlyBusy: false, loc: [6, 5]});
+
+  	// data = {long: num, lat: num, userId: string}
+  	console.log("received data: " + JSON.stringify(data));
+  	var locarr = [parseFloat(data.lng), parseFloat(data.lat)];
+  	console.log(locarr);
+  	Meteor.users.update({_id: data.userId}, {$set: {loc: locarr}});
+  	var user = Meteor.users.findOne({_id: data.userId});
+  	console.log(user.loc);
+  	var usersNear = findUsersNear(user);
+  	if(usersNear.length > 0){
+  		var challengeId = Meteor.call('createChallenge', 'trainer', user._id, usersNear[0]._id);
+  		return challengeId;
+  	}
+//	var UserInfo = FakeUsers.find({name: data.name}).fetch();
+ //  	if(data.lon)
+ //  	{
+ //  		FakeUsers.update(UserInfo[0]._id,
+ //  			{$set: {location:{lat: data.lat, lon: data.lon}}});
+ //  		if(UserInfo[0].currentlyBusy==false){
+ //  			lookForChallenge(UserInfo[0]._id);
+	// 		///console.log(Challenges.find().fetch());
+
+ //  		}
+	// }
+	// //console.log("updated location info");
+  	return "";//JSON.stringify(Battles.find().fetch());
   }
 }
 });
