@@ -73,3 +73,8 @@ Template.battle.oppPokemon = function() {
     return this.pokemon1;
   }
 }
+
+Template.battle.myPokemonFainted = function (){
+  var mine = Template.battle.myPokemon().call(this);
+  return mine.current_hp <= 0;
+}

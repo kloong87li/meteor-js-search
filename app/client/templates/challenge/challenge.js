@@ -52,7 +52,10 @@ Template.challenge.events = {
 
 function otherPlayerRejected() {
   window.setTimeout(function() {
-    window.location.href = "/";
+    if (Android)
+      Android.redirect("/");
+    else
+      window.location.href = "/";
   }, 2000);
   return "Other player rejected. Returning to main menu..."
 
@@ -60,7 +63,10 @@ function otherPlayerRejected() {
 
 function otherPlayerAccepted() {
   window.setTimeout((function() {
-    window.location.href = "/battle/" + this.battleId;
+    if (Android)
+      Android.redirect("/");
+    else
+      window.location.href = "/battle/" + this.battleId;
   }).bind(this), 2000);
   return "Other player accepted! Now heading into battle..."
 
