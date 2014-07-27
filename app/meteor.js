@@ -1,4 +1,6 @@
 if (Meteor.isClient) {
+  globalUserId = 1;
+  
  //  Template.hello.greeting = function () {
  //    return "Add a player:";
  //  };

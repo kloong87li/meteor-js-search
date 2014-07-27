@@ -91,6 +91,26 @@ html, body {
   font-size: 18pt;
 }
 
-.challenge-container {
-  
+.accept-challenge-container {
+  margin-top: 10%;
+  width: 100%;
+  height: 40%;
+  padding-top: 15%;
+}
+
+.challenge-button {
+  width: 65%;
+  height: 6.5rem;
+  line-height: 6.5rem;
+  margin: 5% auto;
+  border-radius: 5px;
+  border: 2px solid black;
+}
+
+.challenge-button.accept {
+  background-color: green;
+}
+
+.challenge-button.reject {
+  background-color: #858585;
 }

@@ -12,10 +12,19 @@
       </div>
     </div>
 
+    
     <div class="accept-challenge-container">
-      <div class="accept-challenge-button">
-        Accept
-      </div>
+      {{#unless hasAccepted}}
+        <div class="challenge-button accept">
+          Accept
+        </div>
+        <div class="challenge-button reject">
+          Reject
+        </div>
+      {{else}}
+        Waiting...
+      {{/unless}}
     </div>
+
   </div>
 </template>
