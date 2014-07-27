@@ -24,8 +24,6 @@ Meteor.methods({
 	createPokemon: function(pokemonNum, level) {
 		console.log("Creating pokemon with number " + pokemonNum + " and level " + level);
 		var pokemonData = PokemonData.findOne({national_id: pokemonNum});
-		// PokemonData.find({national_id: pokemonNum}).forEach(function(pokemonData){
-		console.log('found pokemondata');
 		var moves = _.last(
 			_.sortBy(
 				_.filter(pokemonData.moves, function(move){

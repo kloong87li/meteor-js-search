@@ -66,5 +66,5 @@ loadPokemon(PokemonData.find().count() + 1);
 loadMove(Moves.find().count() + 1);
 loadType(Types.find().count() + 1);
 
-Meteor.call('createPokemon', 1, 30);
+// Meteor.call('createPokemon', 1, 30);
 // createPokemon(1, 10);
