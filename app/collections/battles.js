@@ -1,10 +1,13 @@
 Battles = new Meteor.Collection('battles');
 
 if (Meteor.isServer) {
-  Meteor.publish('singleBattle', function(id) {
-    return id && Battles.find(id);
+  Meteor.publish('singleBattleAndPokemon', function(id) {
+    var battles = Battles.find(id);
+    var battle = Battles.findOne(id);
+    return [battles, 
+            Pokemon.find(battle.pokemonId1), 
+            Pokemon.find(battle.pokemonId2)];
   });
-
 
   function getFirstPokemon(userId){
     return Pokemon.findOne({userId: userId, current_hp: {$ne: 0}}, {partyPosition: 1}, {sort: {partyPosition: 1}});
@@ -140,7 +143,8 @@ if (Meteor.isServer) {
 
 
       changeTurn: function(battleId) {
-          Battles.update({_id:battleId}, {$set: {turn: offTurn, offTurn: turn}});
+          var battle = Battles.findOne({_id:battleId});
+          Battles.update({_id:battleId}, {$set: {turn: battle.offTurn, offTurn: battle.turn}});
       },
 
                         
@@ -157,6 +161,25 @@ if (Meteor.isServer) {
       console.log("changed pokemon:" + pokemonId);
     },
       
+      expPokemon: function(killerId, victimId) {
+          var killer = Pokemon.findOne({_id:killerId});
+          var victim = Pokemon.findOne({_id:victimId});
+          var exp_required = expForLevel(killer.level, 0);
+          var exp_gained = victim.level
+              * victim.level
+              * victim.level
+              * (100 - victim.level) / 50;
+          var text = killer.name + " gained " + exp_gained + " experience. ";
+          var current_exp = killer.exp;
+          if (exp_required <= exp_gained + current_exp) {
+              Pokemon.update({_id:killerId}, {$set: {level: killer.level+1,exp: exp_required-exp_gained + current_exp}});
+              text = text + kill.name + " leveled up to " + killer.level + ". ";
+          } else {
+              Pokemon.update({_id:killerId}, {$set: {exp: exp_gained + current_exp}});
+          }
+          return text;
+      },
+
     endBattle: function(battleId, winnerId) {
       var battle = Battles.findOne({_id:battleId});
       var loserId;

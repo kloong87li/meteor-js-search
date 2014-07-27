@@ -1,0 +1,14 @@
+<template name="pokedex">
+  <div class="pokedex-container">
+    {{#each pokemonData}}
+    <div class="row"> 
+      <div class="menu-item">
+        {{this.name}}
+      </div>
+    </div>
+    {{/each}}
+    {{#if nextPath}}
+      <a class="load-more" href="{{nextPath}}">Load more</a>
+    {{/if}}
+  </div>
+</template>

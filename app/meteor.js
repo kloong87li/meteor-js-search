@@ -70,6 +70,8 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
+    
+    Meteor.users._ensureIndex({ loc : "2d" })
     // code to run on server at startup
   });
 }
