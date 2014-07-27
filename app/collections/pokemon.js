@@ -12,7 +12,8 @@ function calculateHp(base, level) {
 	return Math.floor(level*(iv + 2*base + ev/4 + 100)/100 + 5);
 }
 
-function expForLevel(level) { 
+function expForLevel(level, growthRate) { 
+	//TODO: do legitimately
 	var exp = 0;
 	for(var i = 0; i < level; i++){
 		exp += i;

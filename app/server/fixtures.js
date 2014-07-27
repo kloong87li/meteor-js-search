@@ -66,5 +66,10 @@ loadPokemon(PokemonData.find().count() + 1);
 loadMove(Moves.find().count() + 1);
 loadType(Types.find().count() + 1);
 
+if(Meteor.users.find().count() == 0) {
+	// initialize fake users;
+
+}
+
 // Meteor.call('createPokemon', 1, 30);
 // createPokemon(1, 10);
