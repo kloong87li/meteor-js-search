@@ -1,10 +1,13 @@
 Battles = new Meteor.Collection('battles');
 
 if (Meteor.isServer) {
-  Meteor.publish('singleBattle', function(id) {
-    return id && Battles.find(id);
+  Meteor.publish('singleBattleAndPokemon', function(id) {
+    var battles = Battles.find(id);
+    var battle = Battles.findOne(id);
+    return [battles, 
+            Pokemon.find(battle.pokemonId1), 
+            Pokemon.find(battle.pokemonId2)];
   });
-
 
   function getFirstPokemon(userId){
     return Pokemon.findOne({userId: userId, current_hp: {$ne: 0}}, {partyPosition: 1}, {sort: {partyPosition: 1}});

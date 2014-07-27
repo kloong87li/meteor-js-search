@@ -8,3 +8,11 @@ Template.home.getLocation = function() {
      Session.set("latitude", pos.coords.latitude);
  });
 };
+
+Template.home.events = {
+  "click .pokedex": function() {
+    console.log("passing id");
+    if (Android)
+      Android.getId(Meteor.userId());
+  }
+}

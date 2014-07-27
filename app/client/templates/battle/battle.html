@@ -1,6 +1,55 @@
 <template name="battle">
   <div class="battle-container">
+    <div class="battle-top">
+      <div class="lcd-screen">
+        <div class="battlestage-half battlestage-top">
+          <div class="battlestage-pokeinfo">
+            <p class="battlestage-name">{{oppPokemon.name}}</p>
+            <div class="battlestage-hp-bar"> 
+              <div class="battlestage-hp-fill" style="width: {{hpBarWidth oppPokemon}}"></div>
+            </div>
+            <p class="battlestage-level">Level: {{oppPokemon.level}}</p>
+          </div>
+          <img class="image-right" src={{frontImage oppPokemon}}>
+        </div>
+        <div class="battlestage-half battlestage-bottom">
+          <div class="battlestage-pokeinfo">
+            <p class="battlestage-name">{{myPokemon.name}}</p>
+            <div class="battlestage-hp-bar"> 
+              <div class="battlestage-hp-fill" style="width: {{hpBarWidth myPokemon}}"></div>
+            </div>
+            <p class="battlestage-level">Level: {{myPokemon.level}}</p>
+          </div>
+          <img class="image-left" src={{backImage myPokemon}}>
+        </div>
+      </div>
+    </div>
 
-    
+    <div class="battle-bottom">
+      <div class="battlemenu">
+        {{#if isFighting}}
+          {{#each myPokemon.moves}}
+            <div class="battlemenu-item battlemenu-move">
+              <div class="move-name">{{name}}</div>
+              <div class="move-pp"> {{pp}} / <b>{{max_pp}}</b> </div>
+            </div>
+          {{/each}}
+
+        {{else}}
+          <div class="battlemenu-item" id="fight-button">
+            Fight
+          </div>
+          <div class="battlemenu-item">
+            Pokemon
+          </div>
+          <div class="battlemenu-item">
+            Items
+          </div>
+          <div class="battlemenu-item">
+            Run
+          </div>
+        {{/if}}
+      </div>
+    </div>
   </div>
 </template>

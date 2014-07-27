@@ -1,4 +1,4 @@
-// var cheerio = Meteor.require('cheerio');
+var cheerio = Meteor.require('cheerio');
 
 function scrape() {
 	Meteor.http.get('http://pokemondb.net/move/all', function(err, data) { 
@@ -26,7 +26,7 @@ var totalPokemon = 0;
 var totalMoves = 0;
 var totalTypes = 0;
 
-loadData = false;
+loadData = true;
 
 if(loadData) {
 	var totalPokemon = 150;
@@ -68,7 +68,7 @@ function loadMove(number) {
 			}
 		});
 	} else {
-		//scrape();
+		scrape();
 	}
 	
 }

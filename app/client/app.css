@@ -1,5 +1,6 @@
 html, body {
   height: 100%;
+  background-color: red;
 }
 
 /* OVERRIDES */
@@ -14,10 +15,17 @@ html, body {
 }
 
 
+.lcd-screen {
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: gray;
+  height: 40%;
+}
+
+
 /* Home menu styles */
 
 .home-container {
-  background-color: red;
   height: 100%;
   padding: 2rem;
 }
@@ -38,10 +46,7 @@ html, body {
 .home-container .menu-item {
   font-size: 20pt;
   position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  top: 40%;
 
 }
 
@@ -76,13 +81,6 @@ html, body {
 
 .challenge-container * {
   text-align: center;
-}
-
-.challenge-lcd-screen {
-  border: 2px solid black;
-  border-radius: 5px;
-  background-color: gray;
-  height: 40%;
 }
 
 .challenge-header {
@@ -150,4 +148,118 @@ html, body {
   margin-top: 10%;
   font-size: 16pt;
 
+}
+
+/* Battle Styles */
+
+.battle-container {
+  padding-top: 5%;
+  height: 100%;
+}
+
+.battle-container .battle-top {
+  height: 55%;
+  padding: 5%;
+}
+
+.battle-container .lcd-screen {
+  height: 100%;
+}
+
+.battlestage-half {
+  height: 50%;
+}
+
+.battlestage-half {
+  width: 100%;
+  height: 50%%;
+}
+
+.battlestage-half img{
+  margin-top: 5%;
+  display: inline-block;
+  height: 80%;
+  max-width: 40%;
+}
+
+.battlestage-half .image-right {
+  float: right;
+  margin-right: 5%;
+}
+
+.battlestage-half .image-left {
+  float: left;
+  margin-left: 5%;
+}
+
+.battlestage-pokeinfo {
+  padding-top: 7.5%;
+  height: 100%;
+  width: 45%;
+}
+
+.battlestage-top .battlestage-pokeinfo {
+  float: left;
+  padding-left: 5%;
+}
+
+.battlestage-bottom .battlestage-pokeinfo {
+  float: right;
+  padding-right: 5%;
+
+}
+
+.battlestage-pokeinfo .battlestage-name {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 18pt;
+  margin-bottom: 0;
+}
+
+.battlestage-pokeinfo .battlestage-hp-bar {
+  width: 100%;
+  height: 8.5%;
+  border: 2px solid black;
+}
+
+.battlestage-hp-fill {
+  height: 100%;
+  background-color: green;
+}
+
+.battle-bottom {
+  height: 40%;
+  padding: 10%;
+  padding-top: 0;
+}
+
+.battlemenu {
+  margin-top: 10%;
+  border: 2px solid black;
+  height: 100%;
+}
+
+.battlemenu-item {
+  height: 25%;
+  border-bottom: 2px solid black;
+  text-align: center;
+  padding-top: 1rem;
+  background-color: #D60000;
+  color: white;
+}
+
+.battlemenu-move .move-name {
+  float: left;
+  margin-left: 5%;
+}
+
+.battlemenu-move .move-pp {
+  float: right;
+  margin-right: 5%;
+  color: #DBDBDB;
+}
+
+.battlemenu-move .move-pp b {
+  font-weight: 850;
+  color: white;
 }
