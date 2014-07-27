@@ -6,9 +6,13 @@ function getFirstPokemon(userId){
 	return pokemon;
 }
 
-function calculateDamage(attackingPokemon, defendingPokemon, move) { 
-	//TODO: calculate damage
-	return 0;
+function calculateDamage(attackingPokemon, defendingPokemon, move) {
+    var damage;
+    damage = (((2 * attackingPokemon.level / 5 + 2)
+               * move.power * attackingPokemon.attack 
+               / defendingPokemon.defense) / 50 + 2)
+        * (0.85 + Math.random() * 0.15);
+	return damage;
 }
 
 Meteor.methods({
@@ -59,7 +63,18 @@ Meteor.methods({
 		console.log("do move");
 	},
 
-	changePokemon: function(pokemon) {
-		console.log("change pokemon");
+    //
+	changePokemon: function(battleId, pokemonId) {
+        var battle = Battles.findOne({_id:battleId});
+        var pokemon = Pokemon.findOne({_id:pokemonId});
+        if (battle.playerId1 == pokemon.user_id) {
+            var myPokemon = Pokemon.findOne({_id:battle.pokemonId1});
+            Battles.update({_id:battleId},
+                           {$set: {pokemonId1: pokemonId}});
+        } else {
+            Battles.update({_id:battleId},
+                           {$set: {pokemonId2: pokemonId}});
+        }
+		console.log("changed pokemon:" + pokemonId);
 	}
 })
