@@ -61,6 +61,7 @@ Meteor.methods({
 			username2: Meteor.users.findOne({_id: userId2}).username,
 			pokemon2: getFirstPokemon(userId2),
 			turn: userId1,
+			offTurn: userId2,
 			isOver: false
 		}
         //User.update({_id:userId1}, $set: {currentlyBusy: true});
@@ -87,6 +88,8 @@ Meteor.methods({
 		var otherPokemon = Pokemon.findOne({_id: other.pokemonId});
 		var move = Move.findOne({name: moveName});
 
+		var move = 
+
 		// reduce pp by 1
 
 		var damage = calculateDamage(myPokemon, otherPokemon, move);
@@ -112,9 +115,9 @@ Meteor.methods({
 		console.log("do move");
 	},
 
-    doTurn: function(battleId) {
-        var current_turn = Battles.findOne({_id:battleId}).current_turn;
-        //Battles.update({_id:battleId}, $set: {turn: current_turn + 1});
+
+    changeTurn: function(battleId) {
+        Battles.update({_id:battleId}, {$set: {turn: offTurn, offTurn: turn}});
     },
 
                       
@@ -131,7 +134,7 @@ Meteor.methods({
 		console.log("changed pokemon:" + pokemonId);
 	},
     
-    endChallenge: function(battleId, winnerId) {
+    endBattle: function(battleId, winnerId) {
         var battle = Battles.findOne({_id:battleId});
         var loserId;
         if (battle.playerId1 == winnerId) {
