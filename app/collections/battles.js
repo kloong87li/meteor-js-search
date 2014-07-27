@@ -18,16 +18,12 @@ function calculateDamage(attackingPokemon, defendingPokemon, move) {
 Meteor.methods({
 	startBattle: function(userId1, userId2) { 
 		var battle = {
-			player1: {
-				userId: userId1,
-				username: Meteor.users.findOne({_id: userId1}).username,
-				pokemon: getFirstPokemon(userId1)
-			},
-			player2: {
-				userId: userId2,
-				username: Meteor.users.findOne({_id: userId2}).username,
-				pokemon: getFirstPokemon(userId2)
-			},
+			userId1: userId1,
+			username1: Meteor.users.findOne({_id: userId1}).username,
+			pokemon1: getFirstPokemon(userId1),
+			userId2: userId2,
+			username2: Meteor.users.findOne({_id: userId2}).username,
+			pokemon2: getFirstPokemon(userId2),
 			turn: userId1,
 			isOver: false
 		}

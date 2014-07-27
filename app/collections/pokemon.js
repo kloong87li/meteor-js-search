@@ -43,14 +43,6 @@ Meteor.methods({
 			}
 		}
 
-		var stats = {
-			hp: calculateHp(pokemonData.hp, level),
-			attack: calculateStat(pokemonData.attack, level),
-			defense: calculateStat(pokemonData.defense, level),
-			sp_atk: calculateStat(pokemonData.sp_atk, level),
-			sp_def: calculateStat(pokemonData.sp_def, level),
-			speed: calculateStat(pokemonData.speed, level)
-		}
 
 		pokemon = {
 			name: pokemonData.name,
@@ -58,8 +50,13 @@ Meteor.methods({
 			types: pokemonData.types, 
 			moves: moveSet,
 			exp: expForLevel(level),
-			stats: stats,
-			hp: stats.hp
+			hp: calculateHp(pokemonData.hp, level),
+			attack: calculateStat(pokemonData.attack, level),
+			defense: calculateStat(pokemonData.defense, level),
+			sp_atk: calculateStat(pokemonData.sp_atk, level),
+			sp_def: calculateStat(pokemonData.sp_def, level),
+			speed: calculateStat(pokemonData.speed, level),
+			current_hp: calculateHp(pokemonData.hp, level),
 		}
 		Pokemon.insert(pokemon);
 	}

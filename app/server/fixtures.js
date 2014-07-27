@@ -1,14 +1,45 @@
+var cheerio = Meteor.require('cheerio');
+
+function stripMoveName(name) { 
+	return name.replace(/[^a-zA-Z]/g, "").toLowerCase();
+}
+
+function scrape() {
+	Meteor.http.get('http://pokemondb.net/move/all', function(err, data) { 
+		if(err){
+			console.log(err);
+			return;
+		}
+		var $ = cheerio.load(data.content);
+		$('#moves tbody tr').each(function(row){
+			var name = $(this).find('.ent-name').first().text()
+			var type = $(this).find('.type-icon').first().text().toLowerCase();
+			var category = $(this).find('.icon-move-cat').first().text().toLowerCase();
+			var strippedName = stripMoveName(name);
+			console.log(strippedName);
+			if(!Moves.findOne({name: strippedName})){
+				console.log('move ' + name + ' not found!!');
+			} else {
+				Moves.update({name: strippedName}, {$set: {type: type, category: category}});
+			}
+		})
+	});
+}
+
+
 var totalPokemon = 0;
 var totalMoves = 0;
 var totalTypes = 0;
 
-loadData = false;
+loadData = true;
 
 if(loadData) {
 	var totalPokemon = 150;
 	var totalMoves = 625;
 	var totalTypes = 18;
 }
+
+
 
 function loadPokemon(number) { 
 	console.log("load" + number);
@@ -36,10 +67,13 @@ function loadMove(number) {
 			if(err){
 				console.log(err);
 			} else {
+				data.data.name = stripMoveName(data.data.name);
 				Moves.insert(data.data);
 				loadMove(number+1);
 			}
 		});
+	} else {
+		scrape();
 	}
 	
 }
@@ -73,3 +107,5 @@ if(Meteor.users.find().count() == 0) {
 
 // Meteor.call('createPokemon', 1, 30);
 // createPokemon(1, 10);
+
+
