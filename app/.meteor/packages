@@ -11,7 +11,7 @@ bootstrap-3
 http
 accounts-password
 npm
-accounts-ui
 accounts-google
 http-methods
-
+accounts-twitter
+accounts-ui-bootstrap-3
