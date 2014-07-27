@@ -34,10 +34,7 @@ Meteor.methods({
 			, function(move){
 				return move.level;
 			})
-		, function(move){
-			return move.level;
-		})
-	, 4);
+		, 4);
 
 		var moveSet = []
 		for(var i = 0; i < moves.length; i++) {
@@ -67,4 +64,5 @@ Meteor.methods({
 			current_hp: calculateHp(pokemonData.hp, level),
 		}
 		Pokemon.insert(pokemon);
-}
+	}
+})

@@ -92,10 +92,11 @@ Meteor.methods({
 				move.pp--;
 			}
 		})
+		Pokemon.update(myPokemon);
 
 		var damage = calculateDamage(myPokemon, otherPokemon, move);
 
-		otherPokemon.current_hp = Math.max(0, otherPokemon.current_hp - damage);
+		Pokemon.update({_id: otherPokemon._id}, {$set: {current_hp : Math.max(0, otherPokemon.current_hp - damage)}});
 
 		var effectiveness = getEffectivenss(move.type, otherPokemon);
 		var effectivenessMessage = "";
@@ -113,7 +114,7 @@ Meteor.methods({
 			otherPokemonFainted: otherPokemon.current_hp === 0,
 			moveName: move.name
 		}
-
+		Battles.update(battle);
 		console.log("do move");
 	},
 
