@@ -4,10 +4,14 @@ Challenges.remove({});
 createChallenge= function(type_, user1, user2, id1, id2){
 	if(id1!=id2){
 		console.log("initChallenge");
+
+		var battle = Meteor.call('createBattle', user1, user2);
+
 		Challenges.insert({type: type_,
 						   player1: {userId: user1},
 						   player2: {userId: user2},
-						   challengeSuccess: false});
+						   challengeSuccess: false,
+						   battleId: battle._id})
 	}
 }
 
@@ -23,12 +27,13 @@ if (Meteor.isServer) {
 
 
 acceptChallenge= function(player_id, challenge_id) {
-var challenge = Challenges.findOne({_id:challenge_id});
-if (challenge.playerId1 === player_id) {
-  Challenges.update({_id: challenge_id}, {$set: {'playerStatus1': "accepted"}});
-} else {
-  Challenges.update({_id: challenge_id}, {$set: {'playerStatus2': "accepted"}});
-}
+	var challenge = Challenges.findOne({_id:challenge_id});
+	if (challenge.playerId1 === player_id) {
+	  	Challenges.update({_id: challenge_id}, {$set: {'playerStatus1': "accepted"}});
+	} else {
+	  	Challenges.update({_id: challenge_id}, {$set: {'playerStatus2': "accepted"}});
+	}
+	var challenge2 = Challenges.findOne({_id:challenge_id});
 },
 
 rejectChallenge= function(player_id, challenge_id) {

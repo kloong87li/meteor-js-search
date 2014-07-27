@@ -50,7 +50,7 @@ function calculateDamage(attackingPokemon, defendingPokemon, move) {
 }
 
 Meteor.methods({
-	startBattle: function(userId1, userId2) { 
+	createBattle: function(userId1, userId2) { 
 		var battle = {
 			userId1: userId1,
 			username1: Meteor.users.findOne({_id: userId1}).username,
@@ -60,11 +60,17 @@ Meteor.methods({
 			pokemon2: getFirstPokemon(userId2),
 			turn: userId1,
 			offTurn: userId2,
-			isOver: false
+			isOver: false,
+			active: false
 		}
         Meteor.users.update({_id:userId1}, {$set: {currentlyBusy:true}});
         Meteor.users.update({_id:userId2}, {$set: {currentlyBusy:true}});
 		Battles.insert(battle);
+		return battle;
+	},
+
+	startBattle: function(battleId) {
+		battle.update({_id: battleId}, {$set: {active: true}});
 	},
 
 	doMove: function(battleId, moveName) {
@@ -94,26 +100,35 @@ Meteor.methods({
 		})
 		Pokemon.update(myPokemon);
 
-		var damage = calculateDamage(myPokemon, otherPokemon, move);
+		var missed = Math.random()*100 > move.accuracy;
+		var lastMoveText = "";
+		if(missed){
+			lastMoveText += "It missed!";
+		} else {
+			var damage = calculateDamage(myPokemon, otherPokemon, move);
 
-		Pokemon.update({_id: otherPokemon._id}, {$set: {current_hp : Math.max(0, otherPokemon.current_hp - damage)}});
+			Pokemon.update({_id: otherPokemon._id}, {$set: {current_hp : Math.max(0, otherPokemon.current_hp - damage)}});
 
-		var effectiveness = getEffectivenss(move.type, otherPokemon);
-		var effectivenessMessage = "";
+			var effectiveness = getEffectivenss(move.type, otherPokemon);
+			var effectivenessMessage = "";
 
-		if(effectiveness > 1){
-			effectivenessMessage = "super effective";
-		} else if (effectiveness === 0){
-			effectivenessMessage = "not effective";
-		} else if (effectiveness < 1) {
-			effectivenessMessage = "not very effective";
+			if(effectiveness > 1){
+				lastMovetext += "It was super effective!";
+			} else if (effectiveness === 0){
+				lastMoveText += "It had no effect...";
+			} else if (effectiveness < 1) {
+				lastMoveText += "It was not very effective...";
+			}
+
+			if(otherPokemon.current_hp === 0){
+				if(lastMoveText.length > 0){
+					lastMoveText += " ";
+				}
+				lastMoveText += otherPokemon.name + " fainted!"; 
+			}
 		}
-
-		battle.lastMove = {
-			effectivenessMessage: effectivenessMessage,
-			otherPokemonFainted: otherPokemon.current_hp === 0,
-			moveName: move.name
-		}
+		battle.lastMoveText = lastMoveText;
+		battle.lastMoveName = move.name;
 		Battles.update(battle);
 		console.log("do move");
 	},
@@ -138,7 +153,6 @@ Meteor.methods({
 	},
     
     endBattle: function(battleId, winnerId) {
-
         var battle = Battles.findOne({_id:battleId});
         var loserId;
         if (battle.playerId1 == winnerId) {
