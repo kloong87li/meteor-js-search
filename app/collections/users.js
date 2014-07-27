@@ -15,6 +15,8 @@ if (Meteor.isServer) {
     var id = attempt.user._id;
   	if(Pokemon.find({userId: id}).count() === 0){
   		Meteor.call('createFirstPokemon', id);
+      Meteor.call('createFirstPokemon', id);
+      
   	}
   })
 }

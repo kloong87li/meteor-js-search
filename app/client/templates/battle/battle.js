@@ -38,10 +38,12 @@ Template.battle.events = {
   },
 
   "click .battlemenu-move": function (e) {
-    console.log("do move client");
     Meteor.call("doMove", Session.get("battleId"), Meteor.userId(), this.move, 
       function(e, res) {
-        Meteor.call("changeTurn", Session.get("battleId"));
+        if (!e) {
+          Session.set("isFighting", false);
+          Meteor.call("changeTurn", Session.get("battleId"));
+        }
     });
   }
 }
@@ -57,7 +59,6 @@ Template.battle.turnText = function() {
 
 Template.battle.myPokemon = function() {
   if (!this.battle) return;
-  console.log(this.battle);
   if (this.battle.userId1 == Meteor.userId()) {
     return this.pokemon1;
   } else {
@@ -75,8 +76,16 @@ Template.battle.oppPokemon = function() {
 }
 
 Template.battle.myPokemonFainted = function (){
-  var mine = Template.battle.myPokemon().call(this);
-  return mine.current_hp <= 0;
+  var mine = Template.battle.myPokemon.call(this);
+  if (!mine) return;
+  var fainted = mine.current_hp <= 0;
+  if (!Pokemon.findOne({userId: Meteor.userId(), current_hp: {$gt: 0}})) {
+    endBattle.call(this);
+  } else {
+    switchPokemon.call(this);
+    return fainted;
+  }
+  
 }
 
 Template.battle.flavorText = function (){
@@ -84,4 +93,28 @@ Template.battle.flavorText = function (){
   var res = this.battle.lastMovePokemon + " used " + this.battle.lastMoveName + ". ";
   res += this.battle.lastMoveText;
   return res;
+}
+
+
+Template.battle.myPartyPokemon = function() {
+  return Pokemon.find({userId: Meteor.userId()});
+}
+
+function endBattle() {
+  var winner = Meteor.userId() === this.battle.userId1 ? this.battle.userId2 : this.battle.userId1;
+  Meteor.call("endBattle", this.battle._id, winner, function(e, res) {
+    if (e) console.log("Error ending battle", e);
+  })
+}
+
+function switchPokemon() {
+  var newPoke = Pokemon.findOne({userId: Meteor.userId(), current_hp: {$gt: 0}});
+  Meteor.call("changePokemon", this.battle._id, newPoke._id, function(e) {
+    if (e) console.log("Error switching pokemon", e);
+  });
+}
+
+Template.battle.battleOverText = function (){
+  var status = Meteor.userId() === this.battle.winnerId ? "won!" : "lost.";
+  return "Battle Over. You " + status;
 }

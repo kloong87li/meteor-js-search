@@ -206,14 +206,14 @@ html, body {
 
 .battlestage-bottom .battlestage-pokeinfo {
   float: right;
-  padding-right: 5%;
+  margin-right: 6.75%;
 
 }
 
 .battlestage-pokeinfo .battlestage-name {
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 18pt;
+  font-size: 16pt;
   margin-bottom: 0;
 }
 
@@ -235,7 +235,8 @@ html, body {
 }
 
 .battlemenu {
-  margin-top: 0%;
+  margin-top: 2%;
+  margin-bottom: 2%;
   border: 2px solid black;
   height: 100%;
 }
@@ -269,4 +270,12 @@ html, body {
 /* Pokedex styles */
 .pokedex-container {
   background-color: red;
+}
+
+.battle-over {
+  text-align: center;
+  margin-top: 45%;
+  font-size: 35pt;
+  color: green;
+  font-weight: bolder;
 }

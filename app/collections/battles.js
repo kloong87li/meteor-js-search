@@ -156,7 +156,7 @@ if (Meteor.isServer) {
     changePokemon: function(battleId, pokemonId) {
           var battle = Battles.findOne({_id:battleId});
           var pokemon = Pokemon.findOne({_id:pokemonId});
-          if (battle.playerId1 == pokemon.userId) {
+          if (battle.userId1 == pokemon.userId) {
               Battles.update({_id:battleId},
                              {$set: {pokemonId1: pokemonId}});
           } else {
@@ -188,13 +188,13 @@ if (Meteor.isServer) {
     endBattle: function(battleId, winnerId) {
       var battle = Battles.findOne({_id:battleId});
       var loserId;
-      if (battle.playerId1 == winnerId) {
-          loserId = battle.playerId2;
+      if (battle.userId1 == winnerId) {
+          loserId = battle.userId2;
       } else {
-          loserId = battle.playerId1;
+          loserId = battle.userId1;
       }
-      var winnerMoney = Users.findOne({_id:winnerId}).money;
-      var loserMoney = Users.findOne({_id:loserId}).money;
+      var winnerMoney = Meteor.users.findOne({_id:winnerId}).money;
+      var loserMoney = Meteor.users.findOne({_id:loserId}).money;
       loserMoney = Math.max(0, loserMoney-100);
       Meteor.users.update({_id:winnerId}, {$set: {money: winnerMoney, currentlyBusy: false}});
       Meteor.users.update({_id:loserId}, {$set: {money: loserMoney, currentlyBusy: false}});
@@ -203,7 +203,7 @@ if (Meteor.isServer) {
       	Pokemon.update({_id: pokemon._id}, {$set: {current_hp: pokemon.hp}});
       });
 
-      Battles.update({_id: battleId}, {$set: {isOver: true}});
+      Battles.update({_id: battleId}, {$set: {isOver: true, winnerId: winnerId}});
     }
   });
 }
