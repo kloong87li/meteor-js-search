@@ -53,15 +53,15 @@ Template.challenge.events = {
 function otherPlayerRejected() {
   window.setTimeout(function() {
     window.location.href = "/";
-  }, 2000)
+  }, 2000);
   return "Other player rejected. Returning to main menu..."
 
 }
 
 function otherPlayerAccepted() {
-  window.setTimeout(function() {
+  window.setTimeout((function() {
     window.location.href = "/battle/" + this.battleId;
-  }, 2000)
+  }).bind(this), 2000);
   return "Other player accepted! Now heading into battle..."
 
 }

@@ -10,10 +10,11 @@ if (Meteor.isServer) {
     	return user;
   });
 
-  Accounts.onLogin(function(){
+  Accounts.onLogin(function(attempt){
   	// If the user has no pokemon yet, create one
-  	if(Pokemon.find({userId: Meteor.user._id}).count() === 0){
-  		Meteor.call('createFirstPokemon', Meteor.user._id);
+    var id = attempt.user._id;
+  	if(Pokemon.find({userId: id}).count() === 0){
+  		Meteor.call('createFirstPokemon', id);
   	}
   })
 }

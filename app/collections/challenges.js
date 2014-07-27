@@ -10,7 +10,7 @@ if (Meteor.isServer) {
     createChallenge: function (type, id1, id2) {
       var p1 = Meteor.users.findOne(id1);
       var p2 = Meteor.users.findOne(id2)
-      var battle = Meteor.call("createBattle", id1, id2);
+      var battleId = Meteor.call("createBattle", id1, id2);
       var challenge = {
         type: type,
         playerId1: id1,
@@ -20,7 +20,7 @@ if (Meteor.isServer) {
         playerName2: p2.profile ? p2.profile.name : p2.username,
         playerStatus2: null,
         rejected: false,
-        battleId: battle._id
+        battleId: battleId
       }
       return Challenges.insert(challenge);
     },

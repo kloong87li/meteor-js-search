@@ -5,8 +5,7 @@ if (Meteor.isServer) {
     var battles = Battles.find(id);
     var battle = Battles.findOne(id);
     return [battles, 
-            Pokemon.find(battle.pokemonId1), 
-            Pokemon.find(battle.pokemonId2)];
+        Pokemon.find()];
   });
 
   function getFirstPokemon(userId){
@@ -74,22 +73,22 @@ if (Meteor.isServer) {
       }
           Meteor.users.update({_id:userId1}, {$set: {currentlyBusy:true}});
           Meteor.users.update({_id:userId2}, {$set: {currentlyBusy:true}});
-      Battles.insert(battle);
-      return battle;
+      return Battles.insert(battle);
     },
 
     startBattle: function(battleId) {
       battle.update({_id: battleId}, {$set: {active: true}});
     },
 
-    doMove: function(battleId, moveName) {
+    doMove: function(battleId, playerId, moveName) {
       var battle = Battles.findOne({_id: battleId});
+      console.log(battle);
 
-      if(battle.turn !== Meteor.user._id) {
+      if(battle.turn !== playerId) {
         throw new Meteor.Error(400, "It's not your turn");
       }
 
-      if(user._id === battle.userId1){
+      if(playerId === battle.userId1){
         var myPokemon = Pokemon.findOne({_id: battle.pokemonId1});
       	var otherPokemon = Pokemon.findOne({_id: battle.pokemonId2});
       } else {
@@ -97,27 +96,27 @@ if (Meteor.isServer) {
       	var otherPokemon = Pokemon.findOne({_id: battle.pokemonId1});
       }
 
-
-      var move = Move.findOne({name: moveName});
+      var move = Moves.findOne({name: stripMoveName(moveName)});
 
       //decrement pp
       _.each(myPokemon.moves, function(move){
-        if(move.name == moveName){
+        if(move.move == moveName){
           move.pp--;
         }
       })
-      Pokemon.update(myPokemon);
+      Pokemon.update(myPokemon._id, myPokemon);
+      console.log("my pokemon:", Pokemon.findOne(myPokemon._id));
 
       var missed = Math.random()*100 > move.accuracy;
       var lastMoveText = "";
       if(missed){
-        lastMoveText += "It missed!";
+        lastMoveText = "It missed!";
       } else {
         var damage = calculateDamage(myPokemon, otherPokemon, move);
 
         Pokemon.update({_id: otherPokemon._id}, {$set: {current_hp : Math.max(0, otherPokemon.current_hp - damage)}});
 
-        var effectiveness = getEffectivenss(move.type, otherPokemon);
+        var effectiveness = getEffectiveness(move.type, otherPokemon);
         var effectivenessMessage = "";
 
         if(effectiveness > 1){
@@ -137,8 +136,8 @@ if (Meteor.isServer) {
       }
       battle.lastMoveText = lastMoveText;
       battle.lastMoveName = move.name;
-      Battles.update(battle);
-      console.log("do move");
+      Battles.update(battle._id, battle);
+      console.log("do move server");
     },
 
 

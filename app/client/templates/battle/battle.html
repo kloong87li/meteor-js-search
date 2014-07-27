@@ -30,7 +30,7 @@
         {{#if isFighting}}
           {{#each myPokemon.moves}}
             <div class="battlemenu-item battlemenu-move">
-              <div class="move-name">{{name}}</div>
+              <div class="move-name">{{move}}</div>
               <div class="move-pp"> {{pp}} / <b>{{max_pp}}</b> </div>
             </div>
           {{/each}}
@@ -50,6 +50,9 @@
           </div>
         {{/if}}
       </div>
+      <div class="turn-text"> {{turnText}} </div>
     </div>
   </div>
+
+  <div style="display:none">{{battleId}}</div>
 </template>
