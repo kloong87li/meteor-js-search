@@ -59,7 +59,12 @@ Meteor.methods({
 		console.log("do move");
 	},
 
-    //
+    doTurn: function(battleId) {
+        var current_turn = Battles.findOne({_id:battleId}).current_turn;
+        Battles.update({_id:battleId}, $set: {turn: current_turn + 1});
+    }
+
+                      
 	changePokemon: function(battleId, pokemonId) {
         var battle = Battles.findOne({_id:battleId});
         var pokemon = Pokemon.findOne({_id:pokemonId});
@@ -72,4 +77,9 @@ Meteor.methods({
         }
 		console.log("changed pokemon:" + pokemonId);
 	}
+    
+    endBattle: function(battleId, winnerId) {
+        
+    }
+
 })
