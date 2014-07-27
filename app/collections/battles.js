@@ -88,13 +88,16 @@ Meteor.methods({
 		var otherPokemon = Pokemon.findOne({_id: other.pokemonId});
 		var move = Move.findOne({name: moveName});
 
-		var move = 
-
-		// reduce pp by 1
+		//decrement pp
+		_.each(myPokemon.moves, function(move){
+			if(move.name == moveName){
+				move.pp--;
+			}
+		})
 
 		var damage = calculateDamage(myPokemon, otherPokemon, move);
 
-		otherPokemon.hp = Math.max(0, otherPokemon.hp - damage);
+		otherPokemon.current_hp = Math.max(0, otherPokemon.current_hp - damage);
 
 		var effectiveness = getEffectivenss(move.type, otherPokemon);
 		var effectivenessMessage = "";
@@ -109,6 +112,7 @@ Meteor.methods({
 
 		battle.lastMove = {
 			effectivenessMessage: effectivenessMessage,
+			otherPokemonFainted: otherPokemon.current_hp === 0,
 			moveName: move.name
 		}
 
@@ -145,9 +149,9 @@ Meteor.methods({
         var winnerMoney = Users.findOne({_id:winnerId}).money;
         var loserMoney = Users.findOne({_id:loserId}).money;
         loserMoney = Math.max(0, loserMoney-100);
-        //User.update({_id:winnerId}, $set: {money: winnerMoney, currentlyBusy: false});
-        //User.update({_id:loserId}, $set: {money: loserMoney, currentlyBusy: false});
-        Battles.remove({_id: battleId});
+        User.update({_id:winnerId}, $set: {money: winnerMoney, currentlyBusy: false});
+        User.update({_id:loserId}, $set: {money: loserMoney, currentlyBusy: false});
+        Battles.update({_id: battleId}, {$set: {isOver: true}});
     }
 
 })

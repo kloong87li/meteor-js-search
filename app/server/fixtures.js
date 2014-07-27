@@ -102,7 +102,7 @@ if(Meteor.users.find().count() == 0) {
 
 }
 
-// Meteor.call('createPokemon', 1, 30);
+Meteor.call('createPokemon', 1, 30);
 // createPokemon(1, 10);
 
 //===============location stuff ===========================================

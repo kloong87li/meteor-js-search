@@ -21,13 +21,18 @@ function expForLevel(level, growthRate) {
 	return exp*1000;
 }
 
-function createPokemon(pokemonNum, level) {
-	console.log("Creating pokemon with number " + pokemonNum + " and level " + level);
-	var pokemonData = PokemonData.findOne({national_id: pokemonNum});
-	var moves = _.last(
-		_.sortBy(
-			_.filter(pokemonData.moves, function(move){
-				return move.learn_type === "level up" && move.level <= level;
+Meteor.methods({
+	createPokemon: function(pokemonNum, level) {
+		console.log("Creating pokemon with number " + pokemonNum + " and level " + level);
+		var pokemonData = PokemonData.findOne({national_id: pokemonNum});
+		var moves = _.last(
+			_.sortBy(
+				_.filter(pokemonData.moves, function(move){
+					return move.learn_type === "level up" && move.level <= level &&
+						move.category !== 'status';
+				})
+			, function(move){
+				return move.level;
 			})
 		, function(move){
 			return move.level;
