@@ -6,12 +6,48 @@ function getFirstPokemon(userId){
 	return pokemon;
 }
 
+function getEffectiveness(attackType, defendingPokemon) {
+	effectiveness = 1;
+
+	_.each(attackType.super_effective, function(se_type){
+		_.each(defendingPokemon.types, function(type) { 
+			if(se_type === type){
+				effectiveness *=2;
+			}
+   		})
+    })
+
+    _.each(attackType.ineffective, function(ie_type){
+		_.each(defendingPokemon.types, function(type) { 
+			if(ie_type === type){
+				effectiveness *=.5;
+			}
+   		})
+    })
+
+    _.each(attackType.no_effect, function(ne_type){
+		_.each(defendingPokemon.types, function(type) { 
+			if(ne_type === type){
+				effectiveness *=0;
+			}
+   		})
+    })
+    return effectiveness;
+}
+
 function calculateDamage(attackingPokemon, defendingPokemon, move) {
     var damage;
+    var stab = _.contains(attackingPokemon.types, move.type) ? 1.5 : 1;
+    var attackStat = move.category === 'special' ? attackingPokemon.sp_atk : attackingPokemon.attack;
+    var defenseStat = move.category === 'special' ? attackingPokemon.sp_def : attackingPokemon.defense;
+
+    var effectiveness = getEffectiveness(move.type, defendingPokemon);
+
+    
     damage = (((2 * attackingPokemon.level / 5 + 2)
-               * move.power * attackingPokemon.attack 
-               / defendingPokemon.defense) / 50 + 2)
-        * (0.85 + Math.random() * 0.15);
+               * move.power * attackStat
+               / defenseStat) / 50 + 2)
+        * stab * effectiveness * (0.85 + Math.random() * 0.15);
 	return damage;
 }
 
@@ -56,6 +92,22 @@ Meteor.methods({
 		var damage = calculateDamage(myPokemon, otherPokemon, move);
 
 		otherPokemon.hp = Math.max(0, otherPokemon.hp - damage);
+
+		var effectiveness = getEffectivenss(move.type, otherPokemon);
+		var effectivenessMessage = "";
+
+		if(effectiveness > 1){
+			effectivenessMessage = "super effective";
+		} else if (effectiveness === 0){
+			effectivenessMessage = "not effective";
+		} else if (effectiveness < 1) {
+			effectivenessMessage = "not very effective";
+		}
+
+		battle.lastMove = {
+			effectivenessMessage: effectivenessMessage,
+			moveName: move.name
+		}
 
 		console.log("do move");
 	},

@@ -39,15 +39,20 @@ Meteor.methods({
 		for(var i = 0; i < moves.length; i++) {
 			moveSet[i] = {
 				move: moves[i].name,
-				pp: Moves.findOne({name: moves[i].name}).pp
+				pp: Moves.findOne({name: stripMoveName(moves[i].name)}).pp
 			}
 		}
 
 
+		var types = _.map(pokemonData.types, function(type){
+			return type.name;
+		})
+		console.log(types);
+
 		pokemon = {
 			name: pokemonData.name,
 			level: level,
-			types: pokemonData.types, 
+			types: types,
 			moves: moveSet,
 			exp: expForLevel(level),
 			hp: calculateHp(pokemonData.hp, level),

@@ -1,8 +1,4 @@
-var cheerio = Meteor.require('cheerio');
-
-function stripMoveName(name) { 
-	return name.replace(/[^a-zA-Z]/g, "").toLowerCase();
-}
+// var cheerio = Meteor.require('cheerio');
 
 function scrape() {
 	Meteor.http.get('http://pokemondb.net/move/all', function(err, data) { 
@@ -16,7 +12,6 @@ function scrape() {
 			var type = $(this).find('.type-icon').first().text().toLowerCase();
 			var category = $(this).find('.icon-move-cat').first().text().toLowerCase();
 			var strippedName = stripMoveName(name);
-			console.log(strippedName);
 			if(!Moves.findOne({name: strippedName})){
 				console.log('move ' + name + ' not found!!');
 			} else {
@@ -31,7 +26,7 @@ var totalPokemon = 0;
 var totalMoves = 0;
 var totalTypes = 0;
 
-loadData = true;
+loadData = false;
 
 if(loadData) {
 	var totalPokemon = 150;
@@ -95,10 +90,12 @@ function loadType(number) {
 	
 }
 
+if(loadData){
+	loadPokemon(PokemonData.find().count() + 1);
+	loadMove(Moves.find().count() + 1);
+	loadType(Types.find().count() + 1);
+}
 
-loadPokemon(PokemonData.find().count() + 1);
-loadMove(Moves.find().count() + 1);
-loadType(Types.find().count() + 1);
 
 if(Meteor.users.find().count() == 0) {
 	// initialize fake users;
