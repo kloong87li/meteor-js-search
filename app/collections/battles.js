@@ -192,6 +192,11 @@ if (Meteor.isServer) {
       loserMoney = Math.max(0, loserMoney-100);
       Meteor.users.update({_id:winnerId}, {$set: {money: winnerMoney, currentlyBusy: false}});
       Meteor.users.update({_id:loserId}, {$set: {money: loserMoney, currentlyBusy: false}});
+
+      Pokemon.find({userId: loserId}, {current_hp:1, hp: 1}).forEach(function(pokemon){
+      	Pokemon.update({_id: pokemon._id}, {$set: {current_hp: pokemon.hp}});
+      });
+
       Battles.update({_id: battleId}, {$set: {isOver: true}});
     }
   });

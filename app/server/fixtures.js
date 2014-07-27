@@ -1,4 +1,4 @@
-var cheerio = Meteor.require('cheerio');
+//var cheerio = Meteor.require('cheerio');
 
 function scrape() {
 	Meteor.http.get('http://pokemondb.net/move/all', function(err, data) { 
@@ -27,7 +27,7 @@ var totalMoves = 0;
 var totalTypes = 0;
 var totalSprites = 0;
 
-loadData = true;
+loadData = false;
 
 if(loadData) {
 	var totalPokemon = 150;
@@ -120,10 +120,9 @@ if(Meteor.users.find().count() == 0) {
 
 }
 
-// Meteor.call('createFirstPokemon', 1, 30);
+//Meteor.call('createFirstPokemon', 1, 30);
 // createPokemon(1, 10);
 
-//===============location stuff ===========================================
 FakeUsers= new Meteor.Collection("FakeUsers");
 FakeUsers.remove({});
 Challenges.remove({});
@@ -186,13 +185,14 @@ function findUsersNear(user) {
 HTTP.methods({
 '/challengesForLocation': {
   method: function(data) {
-  	data = this.query;
-  	Meteor.users.insert({username: 'yolo' + Math.random(), currentlyBusy: false, loc: [6, 5]});
+  	var data = this.query;
+  	//Meteor.users.insert({username: 'yolo' + Math.random(), currentlyBusy: false, loc: [6, 5]});
 
   	// data = {long: num, lat: num, userId: string}
-  	console.log("received data: " + JSON.stringify(data));
+  	console.log("received data: " + data);
+  	console.log(JSON.stringify(data));
   	var locarr = [parseFloat(data.lng), parseFloat(data.lat)];
-  	console.log(locarr);
+  	console.log(data);
   	Meteor.users.update({_id: data.userId}, {$set: {loc: locarr}});
   	var user = Meteor.users.findOne({_id: data.userId});
   	console.log(user.loc);
