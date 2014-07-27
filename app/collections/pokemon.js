@@ -69,7 +69,8 @@ Meteor.methods({
 		var level = 25;
 		var pokemonNum = 1 + Math.floor(Math.random() * 2)*3;
 		var pokemon = createPokemon(pokemonNum, level);
-		pokemon.user_id = userId;
+		pokemon.userId = userId;
+		pokemon.partyPosition = 1;
 		Pokemon.insert(pokemon);
 		return pokemon;
 	},
