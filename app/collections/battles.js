@@ -79,7 +79,19 @@ Meteor.methods({
 	}
     
     endBattle: function(battleId, winnerId) {
-        
+        var battle = Battles.findOne({_id:battleId});
+        var loserId;
+        if (battle.playerId1 == winnerId) {
+            loserId = battle.playerId2;
+        } else {
+            loserId = battle.playerId1;
+        }
+        var winnerMoney = Users.findOne({_id:winnerId}).money;
+        var loserMoney = Users.findOne({_id:loserId}).money;
+        loserMoney = Math.max(0, loserMoney-100);
+        User.update({_id:winnerId}, $set: {money: winnerMoney});
+        User.update({_id:loserId}, $set: {money: loserMoney});
+        Battles.remove({_id: battleId});
     }
 
 })
