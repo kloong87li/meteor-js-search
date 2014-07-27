@@ -53,7 +53,7 @@ function createPokemon(pokemonNum, level) {
 	pokemon = {
 		name: pokemonData.name,
 		level: level,
-		image_url: "http://pokeapi.co" + Sprites.findOne({id: pokemonData.national_id+1}).image,
+		//image_url: "http://pokeapi.co" + Sprites.findOne({id: pokemonData.national_id+1}).image,
 		types: types,
 		moves: moveSet,
 		exp: expForLevel(level),

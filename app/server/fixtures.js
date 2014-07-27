@@ -111,7 +111,7 @@ if(loadData){
 	loadPokemon(PokemonData.find().count() + 1);
 	loadMove(Moves.find().count() + 1);
 	loadType(Types.find().count() + 1);
-	loadSprite(Sprites.find().count()+1);
+	//loadSprite(Sprites.find().count()+1);
 }
 
 
