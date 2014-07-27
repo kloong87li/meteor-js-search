@@ -1,5 +1,24 @@
-html, body {
-  height: 100%;
+@font-face {
+    font-family: pokePrint; 
+    src:
+    url("/fonts/Pokemon-GB.ttf")
+}
+
+@font-face {
+    font-family: pokeHollow; 
+    src:
+    url("/fonts/Pokemon-Hollow.ttf")
+}
+
+@font-face {
+    font-family: pokeSolid; 
+    src:
+    url("/fonts/Pokemon-Solid.ttf")
+}
+
+body {
+  height: 480px;
+  width: 320px;
 }
 
 /* OVERRIDES */
@@ -7,7 +26,6 @@ html, body {
 .container-fluid {
   height: 100%;
   padding: 0;
-  background-color: red;
 }
 
 .row {
@@ -24,8 +42,13 @@ html, body {
 
 
 /* Home menu styles */
-
+/*
 .home-container {
+<<<<<<< HEAD
+
+  background-color: red;
+=======
+>>>>>>> f2858c07bae48b65efc7b2989ffb15c017a9d0e7
   height: 100%;
   padding: 2rem;
 }
@@ -48,7 +71,7 @@ html, body {
   position: relative;
   top: 40%;
 
-}
+}*/
 
 /* Login styles */
 
@@ -160,7 +183,6 @@ html, body {
 .battle-container .battle-top {
   height: 55%;
   padding: 5%;
-  padding-bottom: 2.5%;
 }
 
 .battle-container .lcd-screen {
@@ -229,7 +251,7 @@ html, body {
 }
 
 .battle-bottom {
-  height: 35%;
+  height: 40%;
   padding: 10%;
   padding-top: 0;
 }

@@ -13,4 +13,5 @@ accounts-password
 npm
 accounts-google
 http-methods
+accounts-twitter
 accounts-ui-bootstrap-3

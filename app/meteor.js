@@ -36,15 +36,15 @@ if (Meteor.isClient) {
         });
     }
 //   });*/
-// HTTP.post('/test', {
-//     data: {
-//       'name': 'testing1',
-//       'lon': '12.324',
-//       'lat': '16.324'
-//     }
-//   }, function(err, result) {
-//     console.log('Got back: ' + result.content);
-//   });
+ //HTTP.post('/challengesForLocation', {
+ //    data: {
+ //      userId: 'rex',
+ //     lng: 0.5, 
+ //     lat: 0.5
+ //    }
+ //  }, function(err, result) {
+ //    console.log('Got back: ' + result.content);
+ //  });
 
 // HTTP.post('/test', {
 //     data: {

@@ -1,7 +1,7 @@
 //var cheerio = Meteor.require('cheerio');
 
 function scrape() {
-	Meteor.http.get('http://pokemondb.net/move/all', function(err, data) { 
+	/*Meteor.http.get('http://pokemondb.net/move/all', function(err, data) { 
 		if(err){
 			console.log(err);
 			return;
@@ -18,7 +18,7 @@ function scrape() {
 				Moves.update({name: strippedName}, {$set: {type: type, category: category}});
 			}
 		})
-	});
+	});*/
 }
 
 
