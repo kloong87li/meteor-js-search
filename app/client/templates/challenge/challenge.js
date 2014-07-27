@@ -52,7 +52,7 @@ Template.challenge.events = {
 
 function otherPlayerRejected() {
   window.setTimeout(function() {
-    if (Android)
+    if (window.Android)
       Android.redirect("/");
     else
       window.location.href = "/";
@@ -63,7 +63,7 @@ function otherPlayerRejected() {
 
 function otherPlayerAccepted() {
   window.setTimeout((function() {
-    if (Android)
+    if (window.Android)
       Android.redirect("/");
     else
       window.location.href = "/battle/" + this.battleId;

@@ -160,6 +160,7 @@ html, body {
 .battle-container .battle-top {
   height: 55%;
   padding: 5%;
+  padding-bottom: 2.5%;
 }
 
 .battle-container .lcd-screen {
@@ -228,13 +229,13 @@ html, body {
 }
 
 .battle-bottom {
-  height: 40%;
+  height: 35%;
   padding: 10%;
   padding-top: 0;
 }
 
 .battlemenu {
-  margin-top: 10%;
+  margin-top: 0%;
   border: 2px solid black;
   height: 100%;
 }
