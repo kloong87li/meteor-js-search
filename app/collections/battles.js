@@ -63,7 +63,7 @@ Meteor.methods({
     doTurn: function(battleId) {
         var current_turn = Battles.findOne({_id:battleId}).current_turn;
         Battles.update({_id:battleId}, $set: {turn: current_turn + 1});
-    }
+    },
 
                       
 	changePokemon: function(battleId, pokemonId) {
@@ -77,7 +77,7 @@ Meteor.methods({
                            {$set: {pokemonId2: pokemonId}});
         }
 		console.log("changed pokemon:" + pokemonId);
-	}
+	},
     
     endChallenge: function(battleId, winnerId) {
         var battle = Battles.findOne({_id:battleId});
